@@ -1,0 +1,7 @@
+# Argo CD chart 10.10.5 (Argo CD v3.5.5). Used by the bootstrap install and later by Argo CD itself.
+
+# No SSO (dex) or Slack/email notifications needed; saves RAM.
+dex:
+  enabled: false
+notifications:
+  enabled: false
