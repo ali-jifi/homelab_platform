@@ -10,6 +10,12 @@ ipam:
   operator:
     clusterPoolIPv4PodCIDRList: ["10.42.0.0/16"]
 
+# The default "helm" method makes new certs on every render, so Argo CD would never see it in sync.
+hubble:
+  tls:
+    auto:
+      method: cronJob
+
 # Two nodes and tight RAM: one operator replica is enough.
 operator:
   replicas: 1
