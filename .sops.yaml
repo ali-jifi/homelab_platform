@@ -1,0 +1,11 @@
+# First matching rule wins. The catch-all encrypts every value, so a path that
+# fails to match the Kubernetes rule ends up more encrypted, never less.
+creation_rules:
+  # Kubernetes Secrets: only data/stringData are encrypted, so kind/metadata stay readable.
+  - path_regex: (^|/)(platform|bootstrap)/.*\.sops\.ya?ml$
+    encrypted_regex: ^(data|stringData)$
+    age: age1xdjq38y4ct4fp38fan7x2kme25g0n64s4z7a6djt40guqrygh9kq7xjf5n
+
+  # Everything else (e.g. Terraform secrets): every value encrypted.
+  - path_regex: \.sops\.ya?ml$
+    age: age1xdjq38y4ct4fp38fan7x2kme25g0n64s4z7a6djt40guqrygh9kq7xjf5n

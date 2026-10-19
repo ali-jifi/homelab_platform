@@ -10,11 +10,21 @@ terraform {
       source  = "hashicorp/random"
       version = "3.9.1"
     }
+    sops = {
+      source  = "carlpett/sops"
+      version = "1.4.1"
+    }
   }
 }
 
-# Endpoint and token come from PROXMOX_VE_ENDPOINT and PROXMOX_VE_API_TOKEN.
+# Ephemeral: decrypted on each run and never written to state or plan files.
+ephemeral "sops_file" "secrets" {
+  source_file = "${path.module}/secrets.sops.yaml"
+}
+
 # insecure: the host uses Proxmox's self-signed certificate.
 provider "proxmox" {
-  insecure = true
+  endpoint  = var.proxmox_endpoint
+  api_token = ephemeral.sops_file.secrets.data["proxmox_api_token"]
+  insecure  = true
 }

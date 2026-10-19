@@ -1,3 +1,8 @@
+variable "proxmox_endpoint" {
+  type    = string
+  default = "https://ajserver2:8006/"
+}
+
 variable "proxmox_node" {
   type    = string
   default = "ajserver2"
