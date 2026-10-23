@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Copies the k3s admin kubeconfig from cp-1 and points it at the node IP instead of 127.0.0.1.
+# grabs the k3s admin kubeconfig from cp-1 and points it at the node IP instead of 127.0.0.1
 set -euo pipefail
 umask 077
 

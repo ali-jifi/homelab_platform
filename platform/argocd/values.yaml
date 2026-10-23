@@ -1,13 +1,20 @@
-# Argo CD chart 10.10.5 (Argo CD v3.5.5). Used by the bootstrap install and later by Argo CD itself.
+# argo-cd chart 10.10.5 (argo v3.5.5), used by the bootstrap install + later by argo itself
 
-# No SSO (dex) or Slack/email notifications needed; saves RAM.
+# no SSO (dex) or notifs needed, saves RAM
 dex:
   enabled: false
 notifications:
   enabled: false
 
-# KSOPS: lets kustomize decrypt *.sops.yaml files during rendering.
-# Setup follows the KSOPS README (v4.5.1) for the Argo CD Helm chart.
+# tailnet only (TCP proxy via the tailscale operator), argo still serves its own TLS
+server:
+  service:
+    annotations:
+      tailscale.com/expose: "true"
+      tailscale.com/hostname: argocd
+
+# KSOPS lets kustomize decrypt *.sops.yaml files while rendering
+# setup straight from the KSOPS README (v4.5.1) for the argo helm chart
 configs:
   cm:
     kustomize.buildOptions: "--enable-alpha-plugins --enable-exec"
@@ -16,7 +23,7 @@ repoServer:
   volumes:
     - name: custom-tools
       emptyDir: {}
-    # Created by hand at bootstrap: the age private key, the only secret not stored in Git.
+    # made by hand at bootstrap: the age private key, only secret not in git
     - name: sops-age
       secret:
         secretName: sops-age

@@ -6,13 +6,13 @@ metadata:
 spec:
   project: default
   sources:
-    # The chart expects a precreated Secret named operator-oauth (keys client_id, client_secret).
+    # chart wants a precreated secret named operator-oauth (keys client_id, client_secret)
     - repoURL: https://pkgs.tailscale.com/helmcharts
       chart: tailscale-operator
       targetRevision: 1.104.1
       helm:
         releaseName: tailscale-operator
-    # That Secret, decrypted from Git by KSOPS.
+    # that secret, decrypted from git by KSOPS
     - repoURL: git@github.com:ali-jifi/homelab_platform.git
       targetRevision: main
       path: platform/tailscale

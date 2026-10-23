@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Run as root on ajserver2. Safe to re-run.
+# run as root on ajserver2, safe to rerun
 set -euo pipefail
 
 NODE=ajserver2

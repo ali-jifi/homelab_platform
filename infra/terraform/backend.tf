@@ -1,4 +1,4 @@
-# Connection comes from PG_CONN_STR and PGPASSWORD; never put credentials here.
+# conn comes from PG_CONN_STR + PGPASSWORD, never put creds here
 terraform {
   backend "pg" {}
 }

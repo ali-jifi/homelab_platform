@@ -19,7 +19,7 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: kube-system
-  # No prune: a bad commit must not be able to delete the cluster network.
+  # no prune so a bad commit can't nuke the cluster network
   syncPolicy:
     automated:
       selfHeal: true

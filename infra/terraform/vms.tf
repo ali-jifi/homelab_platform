@@ -6,7 +6,7 @@ resource "proxmox_virtual_environment_vm" "node" {
   vm_id     = each.value.vm_id
   pool_id   = var.pool_id
 
-  # The Debian cloud image has no qemu-guest-agent, so shutdown would hang; stop instead.
+  # debian cloud image has no qemu-guest-agent so shutdown would hang, just stop it
   stop_on_destroy = true
   agent {
     enabled = false
@@ -41,7 +41,7 @@ resource "proxmox_virtual_environment_vm" "node" {
     bridge = "vmbr0"
   }
 
-  # Debian cloud images log to ttyS0.
+  # debian cloud images log to ttyS0
   serial_device {}
 
   initialization {

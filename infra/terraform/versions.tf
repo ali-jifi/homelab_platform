@@ -17,12 +17,12 @@ terraform {
   }
 }
 
-# Ephemeral: decrypted on each run and never written to state or plan files.
+# ephemeral = decrypted each run, never lands in state or plan files
 ephemeral "sops_file" "secrets" {
   source_file = "${path.module}/secrets.sops.yaml"
 }
 
-# insecure: the host uses Proxmox's self-signed certificate.
+# insecure bc proxmox uses a self-signed cert
 provider "proxmox" {
   endpoint  = var.proxmox_endpoint
   api_token = ephemeral.sops_file.secrets.data["proxmox_api_token"]

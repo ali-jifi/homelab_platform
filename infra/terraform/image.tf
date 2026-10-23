@@ -1,4 +1,4 @@
-# Pinned build so a rebuild always gets the same image. Checksum from the build's SHA512SUMS.
+# pinned build so rebuilds always get the same image, checksum from the build's SHA512SUMS
 resource "proxmox_download_file" "debian" {
   node_name          = var.proxmox_node
   datastore_id       = "local"

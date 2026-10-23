@@ -1,4 +1,4 @@
-# Applied once by hand. Argo CD then manages every Application in platform/apps.
+# apply once by hand, then argo manages every app in platform/apps
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
