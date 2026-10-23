@@ -10,9 +10,11 @@ VM_ROLE=TerraformVM
 INFRA_ROLE=TerraformInfra
 BRIDGE_PATH=/sdn/zones/localnetwork/vmbr0
 
+# Pool.Audit bc proxmox hides a VM's pool name without it, so tf saw pool_id as empty and wanted to "fix" it every plan
 VM_PRIVS="VM.Allocate,VM.Audit,VM.PowerMgmt,VM.GuestAgent.Audit,\
 VM.Config.CPU,VM.Config.Memory,VM.Config.Disk,VM.Config.Network,\
-VM.Config.CDROM,VM.Config.Cloudinit,VM.Config.Options,VM.Config.HWType"
+VM.Config.CDROM,VM.Config.Cloudinit,VM.Config.Options,VM.Config.HWType,\
+Pool.Audit"
 
 INFRA_PRIVS="Datastore.Audit,Datastore.AllocateSpace,Datastore.AllocateTemplate,\
 SDN.Use,Sys.Audit,Sys.AccessNetwork"
