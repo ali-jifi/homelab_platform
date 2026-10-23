@@ -31,9 +31,10 @@ resource "terraform_data" "k3s_server" {
   }
 
   # builtin CNI, netpol, kube-proxy, traefik + servicelb are off, cilium takes over in P1.3
+  # taint keeps normal pods off cp-1 so its 3 GiB stays for the API server, cilium + node exporter tolerate it
   provisioner "remote-exec" {
     inline = concat(local.stage_token, [
-      "curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=${var.k3s_version} sh -s - server --token-file /etc/rancher/k3s/cluster-token --node-ip ${local.cp_ip} --tls-san ${local.cp_ip} --flannel-backend=none --disable-network-policy --disable-kube-proxy --disable=traefik --disable=servicelb",
+      "curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=${var.k3s_version} sh -s - server --token-file /etc/rancher/k3s/cluster-token --node-ip ${local.cp_ip} --tls-san ${local.cp_ip} --flannel-backend=none --disable-network-policy --disable-kube-proxy --disable=traefik --disable=servicelb --node-taint node-role.kubernetes.io/control-plane:NoSchedule",
     ])
   }
 }

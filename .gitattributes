@@ -1,0 +1,2 @@
+# LF everywhere, scripts run in WSL/linux and break on CRLF
+* text=auto eol=lf

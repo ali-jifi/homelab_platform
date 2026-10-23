@@ -1,0 +1,26 @@
+apiVersion: v1
+data:
+    sshPrivateKey: ENC[AES256_GCM,data:KuH0kHbL/DzEBE/N/FONlXxg3Mrt0AC7W12erzqvA6XdwlSgdVpqwkv0NQfoED4ym5+5bmH8YAr7Gwx642vfWH0o5ASmEEvWy3NIQaNUXrEr6Mqa18yV8CmTO805/HfriFxEbnSdNp9j5/HGDWixB2bZq8TrSi9+3zTr5Lv/G84RKi5BhNujmfuj7gfTmfQiAbM3HAZboDwaGC534Is6QUNv1Vu7i4n7894EZWkedpJHnzrkB4sjFZgFE1KvYg3UnaoKJiVSzKUSPaZl02ZYd/g26huYKq95T/uMXQIgD0T9+cxO+0ayAaYhG8DvpUYkGTzKSQDzJPNitpTYUXykdYVV15z+wduL8+SWFzoo8I2buHX2GKe56F1wZlZuUC+QYteKEnIKbuoLMe92gLAoXsSLGXJOa8gYu0Y3NqaA8+e8Q7VO+JdUP7fzuuFUbDR4KMgdEfTtxjHVk1D0Kovp1jmeyaVrtT13WA7MkmyZsIYpqeRkrWns6ZCK3yJO7NWftiAAuxm5v8kYu5kn0jwzBu3QUTKydINYI9sC7f9QUDCCEjBbz8hIRRLGZoRZ/Tze9PA+j3lw8PhHxhv+/tPOJpPCv0/rmuUaZ1yO6HAlO0m2WCCKlJEFiKmXMS3xMBiGhgCgAeBKAoh1dsyItYhxbkPYL6O9o8FuI11HxdgGxJ1nqHvb77aMP60UwwAmN1lzAhxVfsM/Af9NFSK66Iioi28bfw4=,iv:hBiHqE2uyRXuyqrl7b2jbqM0vP7iQ9TRTnf6OMI8EUQ=,tag:sE3RzWMBJb6b41e3om50Iw==,type:str]
+    type: ENC[AES256_GCM,data:a1q9hA==,iv:dTn886zLAS2y7wfdnyCeXAr0ClunoYMMbIRQFPrByVs=,tag:w13t3PyATAV4Yg6EFUL+HQ==,type:str]
+    url: ENC[AES256_GCM,data:4gwzThjDyArR15O0CN8f4KYHxwkwiBjToPCMR//IYvO3xab/PX9L2HOvx7M8yNrQ/MnLZf9P7W0IckKC,iv:xTiK0NaMnQ76fG9+M29o9eXqUnTGu8fcQIV4qOOsTN8=,tag:NOEUOAMly4j9h7yydL2K0A==,type:str]
+kind: Secret
+metadata:
+    labels:
+        argocd.argoproj.io/secret-type: repository
+    name: repo-homelab
+    namespace: argocd
+sops:
+    age:
+        - enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBxT2pSTno5OWtQTFVlR3o2
+            b1FtSEp6U0VPcC9xU2JKYVowN2N6ZjN5UGlRCkIyM2lFWlk5UTdCcFpGSkp2M0JZ
+            T0pKT25qc1ZpQ3NIMzJLM05IaGVaUVkKLS0tIG5WK3UzN0ZYeE5LVUNRQTJ6S3ox
+            ZG91TUlBUThPTTdjZHJWRDNmbmhJbzgKLqeiJFIe3wBjB+dTwwL4HS58XBpRGt4U
+            kI+lIRqYsUr4gwa4mGDS0Nvn8FpiApAeVlDTgttnPBzhEtVJcf0R1g==
+            -----END AGE ENCRYPTED FILE-----
+          recipient: age1xdjq38y4ct4fp38fan7x2kme25g0n64s4z7a6djt40guqrygh9kq7xjf5n
+    encrypted_regex: ^(data|stringData)$
+    lastmodified: "2026-10-23T19:54:14Z"
+    mac: ENC[AES256_GCM,data:CvlzfE/fO/iRCNCkg1Fy2aL8cBjQaJXTznA8KOofCqv1ghHmoWjilqKH0dquPVkH+caFHlB7rvxkbCroIanARiHkZjCoRtgCbEGUQFtVfWdv5U3VgY0aTbVg2Ajk+GRobcIhAUGUpRK+23a8+7HLGzKJ1urxnohlFr02/2zZsVQ=,iv:G1lp10sgCjYMx8WneMZzfxQdzQVX4zqsAqXK62ILCgg=,tag:w0flImGxIMfheFOGocLzUg==,type:str]
+    version: 3.13.3
