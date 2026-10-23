@@ -4,6 +4,8 @@
     "config:recommended",
     // pins actions to commit SHAs, tags can be moved by whoever owns the action
     "helpers:pinGitHubActionDigests",
+    // picks up the "# renovate: datasource=... depName=..." lines in ci.yaml
+    "customManagers:githubActionsVersions",
   ],
   timezone: "America/Chicago",
   // let new releases sit a few days so broken or malicious ones get pulled first
@@ -53,6 +55,20 @@
       // cluster core: k3s, cilium, argo. never bundled, always reviewed by hand
       matchPackageNames: ["k3s-io/k3s", "cilium", "argo-cd"],
       labels: ["cluster-core"],
+    },
+
+    // automerge = auto deploy (argo syncs main), so only low blast radius stuff
+    // github only merges once the ci checks pass (ruleset on main)
+    {
+      matchManagers: ["github-actions", "custom.regex"],
+      matchFileNames: [".github/workflows/**"],
+      matchUpdateTypes: ["minor", "patch", "digest", "pinDigest"],
+      automerge: true,
+    },
+    {
+      matchPackageNames: ["tailscale-operator", "kube-prometheus-stack"],
+      matchUpdateTypes: ["patch"],
+      automerge: true,
     },
   ],
 }

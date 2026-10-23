@@ -1,0 +1,55 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+env:
+  # renovate: datasource=github-releases depName=hashicorp/terraform extractVersion=^v(?<version>.+)$
+  TERRAFORM_VERSION: 1.16.5
+  # renovate: datasource=github-releases depName=helm/helm
+  HELM_VERSION: v4.3.1
+  # renovate: datasource=github-releases depName=yannh/kubeconform
+  KUBECONFORM_VERSION: v0.8.0
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: infra/terraform
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: hashicorp/setup-terraform@v4.0.1
+        with:
+          terraform_version: ${{ env.TERRAFORM_VERSION }}
+      - run: terraform fmt -check -recursive
+      # no backend in CI, the state db is only reachable from home
+      - run: terraform init -backend=false -input=false
+      - run: terraform validate
+
+  manifests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: azure/setup-helm@v5.0.1
+        with:
+          version: ${{ env.HELM_VERSION }}
+      - name: install kubeconform
+        run: |
+          curl -sfL "https://github.com/yannh/kubeconform/releases/download/${KUBECONFORM_VERSION}/kubeconform-linux-amd64.tar.gz" \
+            | sudo tar xz -C /usr/local/bin kubeconform
+      # yq comes preinstalled on github's ubuntu runners
+      - run: bash scripts/ci-render.sh rendered
+      # CRDs not in the catalog (cilium, tailscale) get skipped instead of failing
+      - name: kubeconform
+        run: >
+          kubeconform -strict -summary -ignore-missing-schemas
+          -kubernetes-version 1.36.0
+          -schema-location default
+          -schema-location 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json'
+          rendered/*.yaml platform/apps/*.yaml bootstrap/*.yaml
