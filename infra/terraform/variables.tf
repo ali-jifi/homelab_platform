@@ -30,7 +30,7 @@ variable "ssh_private_key_path" {
 
 variable "k3s_version" {
   type    = string
-  default = "v1.36.5+k3s1"
+  default = "v1.37.1+k3s1"
 }
 
 variable "nodes" {
