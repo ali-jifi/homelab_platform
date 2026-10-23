@@ -1,0 +1,11 @@
+run_id,mode,stage,seconds
+20261023T195624Z,warm,preflight,6
+20261023T195624Z,warm,destroy,14
+20261023T195624Z,warm,tailscale_cleanup,3
+20261023T195624Z,warm,image,8
+20261023T195624Z,warm,vms_and_k3s,60
+20261023T195624Z,warm,kubeconfig,0
+20261023T195624Z,warm,cilium,32
+20261023T195624Z,warm,argocd,41
+20261023T195624Z,warm,apps_healthy,158
+20261023T195624Z,warm,total,323

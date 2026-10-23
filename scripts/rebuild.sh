@@ -59,7 +59,7 @@ tailscale_cleanup() {
     | jq -r '.devices[] | select((.tags // []) | any(. == "tag:k8s" or . == "tag:k8s-operator")) | "\(.id) \(.hostname)"' \
     | while read -r dev host; do
         echo "    removing tailnet device $host"
-        curl -sf -X DELETE -H "Authorization: Bearer $token" "https://api.tailscale.com/api/v2/device/$dev"
+        curl -sf -o /dev/null -X DELETE -H "Authorization: Bearer $token" "https://api.tailscale.com/api/v2/device/$dev"
       done
 }
 
