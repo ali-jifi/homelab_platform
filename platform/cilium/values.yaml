@@ -19,3 +19,7 @@ hubble:
 # 2 nodes + tight RAM, 1 operator replica is plenty
 operator:
   replicas: 1
+
+# tailscale proxies forward packets to service IPs, which socket LB never sees
+socketLB:
+  hostNamespaceOnly: true
