@@ -48,13 +48,18 @@
     {
       // providers change together often, one PR instead of three
       matchManagers: ["terraform"],
-      matchDepTypes: ["provider"],
+      matchDepTypes: ["required_provider"],
       groupName: "terraform providers",
     },
     {
       // cluster core: k3s, cilium, argo. never bundled, always reviewed by hand
       matchPackageNames: ["k3s-io/k3s", "cilium", "argo-cd"],
       labels: ["cluster-core"],
+    },
+    {
+      // cilium 1.20 is only tested up to k8s 1.36, bump this cap together with cilium
+      matchPackageNames: ["k3s-io/k3s"],
+      allowedVersions: "/^v1\\.36\\./",
     },
 
     // automerge = auto deploy (argo syncs main), so only low blast radius stuff
