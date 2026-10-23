@@ -11,6 +11,8 @@
   // let new releases sit a few days so broken or malicious ones get pulled first
   minimumReleaseAge: "3 days",
   dependencyDashboard: true,
+  // personal rep, default changed to 0 prs an hour (unlimited)
+  prHourlyLimit: 0,
 
   // argo apps have no standard file name so renovate needs to be told where they live
   argocd: {
