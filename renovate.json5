@@ -1,0 +1,58 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  extends: [
+    "config:recommended",
+    // pins actions to commit SHAs, tags can be moved by whoever owns the action
+    "helpers:pinGitHubActionDigests",
+  ],
+  timezone: "America/Chicago",
+  // let new releases sit a few days so broken or malicious ones get pulled first
+  minimumReleaseAge: "3 days",
+  dependencyDashboard: true,
+
+  // argo apps have no standard file name so renovate needs to be told where they live
+  argocd: {
+    managerFilePatterns: ["/^platform/apps/.+\\.yaml$/"],
+  },
+
+  customManagers: [
+    {
+      // k3s version in terraform, tags look like v1.36.5+k3s1
+      customType: "regex",
+      managerFilePatterns: ["/^infra/terraform/variables\\.tf$/"],
+      matchStrings: ['variable "k3s_version" \\{[^}]*default\\s*=\\s*"(?<currentValue>[^"]+)"'],
+      depNameTemplate: "k3s-io/k3s",
+      datasourceTemplate: "github-releases",
+      versioningTemplate: "regex:^v(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)\\+k3s(?<build>\\d+)$",
+    },
+    {
+      // ksops init container image in the argo values
+      customType: "regex",
+      managerFilePatterns: ["/^platform/argocd/values\\.yaml$/"],
+      matchStrings: ["image: (?<depName>viaductoss/ksops):(?<currentValue>v[\\d.]+)"],
+      datasourceTemplate: "docker",
+    },
+    {
+      // renovate's own version in the workflow
+      customType: "regex",
+      managerFilePatterns: ["/^\\.github/workflows/renovate\\.yaml$/"],
+      matchStrings: ["renovate-version: (?<currentValue>[\\d.]+)"],
+      depNameTemplate: "ghcr.io/renovatebot/renovate",
+      datasourceTemplate: "docker",
+    },
+  ],
+
+  packageRules: [
+    {
+      // providers change together often, one PR instead of three
+      matchManagers: ["terraform"],
+      matchDepTypes: ["provider"],
+      groupName: "terraform providers",
+    },
+    {
+      // cluster core: k3s, cilium, argo. never bundled, always reviewed by hand
+      matchPackageNames: ["k3s-io/k3s", "cilium", "argo-cd"],
+      labels: ["cluster-core"],
+    },
+  ],
+}
