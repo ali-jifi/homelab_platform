@@ -1,0 +1,64 @@
+# kube-prometheus-stack 92.11.0, trimmed for a 2 node k3s homelab
+# everything pinned to wk-1 so cp-1's 3 gib stays free for the api server
+# kinda hard fitting everything on 6 gib of mem but we make it work
+
+# no alerting yet, saves RAM
+alertmanager:
+  enabled: false
+
+# k3s runs these inside its own binary on localhost so they can't be scraped like normal pods,
+# and kube-proxy doesn't exist (cilium replaced it)
+# leaving them on = permanent "target down"
+kubeControllerManager:
+  enabled: false
+kubeScheduler:
+  enabled: false
+kubeEtcd:
+  enabled: false
+kubeProxy:
+  enabled: false
+
+grafana:
+  # admin creds come from the sops encrypted grafana-admin secret, not the charts default password
+  admin:
+    existingSecret: grafana-admin
+  nodeSelector:
+    kubernetes.io/hostname: wk-1
+  # tailnet only, plain http on port 80
+  service:
+    annotations:
+      tailscale.com/expose: "true"
+      tailscale.com/hostname: grafana
+
+prometheusOperator:
+  nodeSelector:
+    kubernetes.io/hostname: wk-1
+
+kube-state-metrics:
+  nodeSelector:
+    kubernetes.io/hostname: wk-1
+
+# keeps 7 days or 8 gib of metrics
+# whichever is reached first
+# mem capped at 1.5 gib bc homelab isnt upgraded yet
+prometheus:
+  prometheusSpec:
+    retention: 7d
+    retentionSize: 8GB
+    nodeSelector:
+      kubernetes.io/hostname: wk-1
+    resources:
+      requests:
+        cpu: 100m
+        memory: 512Mi
+      limits:
+        memory: 1536Mi
+    # k3s local-path = a folder on wk-1's disk, survives pod restarts
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: local-path
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 10Gi

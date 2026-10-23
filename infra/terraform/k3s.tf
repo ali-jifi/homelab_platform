@@ -30,7 +30,7 @@ resource "terraform_data" "k3s_server" {
     destination = "/tmp/k3s-token"
   }
 
-  # built-in CNI, netpol, kube-proxy, traefik + servicelb are off, cilium takes over in P1.3
+  # builtin CNI, netpol, kube-proxy, traefik + servicelb are off, cilium takes over in P1.3
   provisioner "remote-exec" {
     inline = concat(local.stage_token, [
       "curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=${var.k3s_version} sh -s - server --token-file /etc/rancher/k3s/cluster-token --node-ip ${local.cp_ip} --tls-san ${local.cp_ip} --flannel-backend=none --disable-network-policy --disable-kube-proxy --disable=traefik --disable=servicelb",

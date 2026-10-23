@@ -22,7 +22,7 @@ ephemeral "sops_file" "secrets" {
   source_file = "${path.module}/secrets.sops.yaml"
 }
 
-# insecure bc proxmox uses a self-signed cert
+# insecure bc proxmox uses a self signed cert
 provider "proxmox" {
   endpoint  = var.proxmox_endpoint
   api_token = ephemeral.sops_file.secrets.data["proxmox_api_token"]

@@ -1,4 +1,4 @@
-# first matching rule wins. catch-all encrypts every value, so a path that
+# first matching rule wins. catch all encrypts every value, so a path that
 # misses the k8s rule ends up more encrypted, never less
 creation_rules:
   # k8s secrets: only data/stringData get encrypted so kind/metadata stay readable
