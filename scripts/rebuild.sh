@@ -81,7 +81,13 @@ cilium() {
   helm upgrade --install cilium "$(chart_field cilium chart)" \
     --repo "$(chart_field cilium repoURL)" --version "$(chart_field cilium targetRevision)" \
     --namespace kube-system -f platform/cilium/values.yaml --wait --timeout 10m
-  kubectl wait --for=condition=Ready nodes --all --timeout=10m
+  # cilium taking over the datapath can blip the API server for a bit, so retry instead of dying on the first timeout
+  local tries=0
+  until kubectl wait --for=condition=Ready nodes --all --timeout=60s; do
+    (( ++tries >= 10 )) && return 1
+    echo "    API server not answering yet, retry $tries/10"
+    sleep 10
+  done
 }
 
 argocd() {
